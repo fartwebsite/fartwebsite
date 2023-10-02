@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function() {
   container.style.display = "none";
 
   // Dummy username and password
-  const correctUsername = "admin";
-  const correctPassword = "password123";
+  const correctUsername = "password";
+  const correctPassword = "password";
 
   loginBtn.addEventListener("click", function() {
     const enteredUsername = document.getElementById("username").value;
