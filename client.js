@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const SERVER_URL = 'http://73.66.168.215:27770';  // Note: Added 'http://' for proper URL formation
+  const SERVER_URL = 'https://73.66.168.215:27770';  // Note: Added 'http://' for proper URL formation
 
   const loginSection = document.getElementById("login-section");
   const container = document.querySelector(".container");
