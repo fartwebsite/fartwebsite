@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text-based Journal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .entry-text {
+      text-align: left;
+    }
+
+    .bubble-selection label {
+      margin-right: 2px;
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .button-container {
+      margin-top: 10px;
+    }
+
+    button {
+      margin-right: 10px;
+    }
+
+    .entry-text ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    #login-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #login-section input {
+      margin: 10px 0;
+    }
+
+    /* Styles for tabs */
+    .tabs {
+      display: flex;
+      cursor: pointer;
+      justify-content: space-between;
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      flex: 1;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .tab:hover {
+      background-color: #e0e0e0;
+    }
+
+    .active-tab {
+      background-color: #d0d0d0;
+      border-bottom: 3px solid #007BFF;
+      margin-bottom: -3px;
+    }
+
+    #graph-content {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Login Section -->
+  <div id="login-section">
+    <h2>Login</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username">
+    <label for="password">Password:</label>
+    <input type="password" id="password">
+    <div style="text-align: center; margin-top: 10px;">
+      <button id="login-btn">Login</button>
+      <div style="margin-top: 15px;">
+        <button id="register-btn">Create Account</button>
+      </div>
+    </div>
+    <p id="login-error-message" style="color:red;"></p>
+  </div>
+
+  <!-- Registration Section -->
+  <div id="registration-section" style="display:none;">
+    <h2>Register</h2>
+    <label for="register-username">Username:</label>
+    <input type="text" id="register-username">
+    <label for="register-password">Password:</label>
+    <input type="password" id="register-password">
+    <button id="submit-registration">Submit</button>
+    <button id="cancel-registration">Cancel</button>
+    <p id="registration-error-message" style="color:red;"></p>
+  </div>
+
+  <div class="container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div id="journal-tab" class="tab active-tab">Journal</div>
+      <div id="graph-tab" class="tab">Graph</div>
+    </div>
+
+    <!-- Journal Tab Content -->
+    <div class="tab-content active-content" id="journal-content">
+      <h1>My Text-based Journal</h1>
+      <div class="entry">
+        <div class="number-selection">
+          <p>Select a number from 1 to 10:</p>
+          <div class="bubble-selection">
+            <label for="number-1">1</label>
+            <input type="radio" name="number" id="number-1" value="1">
+            <label for="number-2">2</label>
+            <input type="radio" name="number" id="number-2" value="2">
+            <label for="number-3">3</label>
+            <input type="radio" name="number" id="number-3" value="3">
+            <label for="number-4">4</label>
+            <input type="radio" name="number" id="number-4" value="4">
+            <label for="number-5">5</label>
+            <input type="radio" name="number" id="number-5" value="5">
+            <label for="number-6">6</label>
+            <input type="radio" name="number" id="number-6" value="6">
+            <label for="number-7">7</label>
+            <input type="radio" name="number" id="number-7" value="7">
+            <label for="number-8">8</label>
+            <input type="radio" name="number" id="number-8" value="8">
+            <label for="number-9">9</label>
+            <input type="radio" name="number" id="number-9" value="9">
+            <label for="number-10">10</label>
+            <input type="radio" name="number" id="number-10" value="10">
+          </div>
+        </div>
+        <textarea id="journal-entry" placeholder="Write your entry here"></textarea>
+        <div class="button-container">
+          <button id="post-entry">Post</button>
+          <button id="delete-entry">Delete Draft</button>
+        </div>
+        <div class="entry-text">
+          <p>Previous day's entries:</p>
+          <ul id="entry-list">
+            <!-- Display previous day's entries here as list items -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph Tab Content -->
+    <div class="tab-content" id="graph-content">
+      <canvas id="entryGraph"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="client.js"></script>
+</body>
+
+</html>
