@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createGraph(graphData) {
-    // Destroy any existing chart to prevent conflicts
+    // Check if there's an existing chart, and destroy it if it exists
     if (window.myLineChart) {
       window.myLineChart.destroy();
     }
