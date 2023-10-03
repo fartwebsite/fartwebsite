@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const SERVER_URL = 'https://73.66.168.215:27770'; // Update with your server URL
+  const SERVER_URL = 'https://www.fartjournal.net:27770'; // Update with your server URL
 
   const loginSection = document.getElementById("login-section");
   const container = document.querySelector(".container");
@@ -186,17 +186,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createGraph(graphData) {
-    // Use Chart.js to create/update the graph based on graphData
+    // Destroy any existing chart to prevent conflicts
+    if (window.myLineChart) {
+      window.myLineChart.destroy();
+    }
+
+    // Use Chart.js to create/update the line chart based on graphData
     // Example:
     const ctx = document.getElementById('entryGraph').getContext('2d');
-    const myChart = new Chart(ctx, {
-      type: 'bar',
+    window.myLineChart = new Chart(ctx, {
+      type: 'line',
       data: {
         labels: graphData.labels,
         datasets: [{
           label: 'Entry Count',
           data: graphData.entryCount,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 2,
+          fill: false,
         }]
       },
       options: {
