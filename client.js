@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const SERVER_URL = 'https://www.fartjournal.net:27770'; // Update with your server URL
+  const SERVER_URL = 'https://73.66.168.215:27770'; // Update with your server URL
 
   const loginSection = document.getElementById("login-section");
   const container = document.querySelector(".container");
