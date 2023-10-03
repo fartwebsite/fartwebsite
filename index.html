@@ -1,213 +1,187 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const SERVER_URL = 'https://www.fartjournal.net:27770'; // Update with your server URL
+<!DOCTYPE html>
+<html lang="en">
 
-  const loginSection = document.getElementById("login-section");
-  const container = document.querySelector(".container");
-  const loginBtn = document.getElementById("login-btn");
-  const errorMessage = document.getElementById("login-error-message");
-  const entryList = document.getElementById("entry-list");
-  const journalEntry = document.getElementById("journal-entry");
-  const postButton = document.getElementById("post-entry");
-  const journalTab = document.getElementById("journal-tab");
-  const journalContent = document.getElementById("journal-content");
-
-  const registrationSection = document.getElementById("registration-section");
-  const registerBtn = document.getElementById("register-btn");
-  const submitRegistrationBtn = document.getElementById("submit-registration");
-  const cancelRegistrationBtn = document.getElementById("cancel-registration");
-  const registrationErrorMessage = document.getElementById("registration-error-message");
-
-  const graphTab = document.getElementById("graph-tab");
-  const graphContent = document.getElementById("graph-content");
-
-  let currentUser = null;
-
-  // Hide main content by default
-  container.style.display = "none";
-
-  loginBtn.addEventListener("click", function () {
-    const enteredUsername = document.getElementById("username").value;
-    const enteredPassword = document.getElementById("password").value;
-
-    fetch(`${SERVER_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: enteredUsername,
-        password: enteredPassword
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // If login is successful, hide the login and show content
-          loginSection.style.display = "none";
-          container.style.display = "block";
-          currentUser = enteredUsername;
-          loadUserEntries();
-        } else {
-          errorMessage.textContent = "Invalid username or password!";
-        }
-      });
-  });
-
-  function loadUserEntries() {
-    fetch(`${SERVER_URL}/getEntries`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: currentUser
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.entries) {
-          displayEntries(data.entries);
-        }
-      });
-  }
-
-  function displayEntries(entries) {
-    entryList.innerHTML = '';
-    entries.forEach(entry => {
-      const listItem = document.createElement("li");
-      listItem.textContent = `${entry.date}: ${entry.number} - ${entry.text}`;
-      entryList.appendChild(listItem);
-    });
-  }
-
-  postButton.addEventListener("click", function () {
-    const selectedNumber = document.querySelector('input[name="number"]:checked');
-    const entryText = journalEntry.value.trim();
-
-    if (!selectedNumber || entryText === "") {
-      alert("Please select a number and write an entry.");
-      return;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text-based Journal</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
 
-    const entryData = {
-      date: new Date().toLocaleDateString(),
-      number: selectedNumber.value,
-      text: entryText
-    };
+    .container {
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
 
-    fetch(`${SERVER_URL}/postEntry`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: currentUser,
-        entry: entryData
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Successfully posted the entry, reload entries
-          loadUserEntries();
-          journalEntry.value = "";
-          selectedNumber.checked = false;
-        } else {
-          // Handle the error
-          alert("There was an error posting the entry. Please try again.");
-        }
-      });
-  });
+    .entry-text {
+      text-align: left;
+    }
 
-  registerBtn.addEventListener("click", function () {
-    loginSection.style.display = "none";
-    registrationSection.style.display = "block";
-  });
+    .bubble-selection label {
+      margin-right: 2px;
+    }
 
-  cancelRegistrationBtn.addEventListener("click", function () {
-    registrationSection.style.display = "none";
-    loginSection.style.display = "block";
-  });
+    textarea {
+      width: 100%;
+      margin-top: 10px;
+    }
 
-  submitRegistrationBtn.addEventListener("click", function () {
-    const enteredUsername = document.getElementById("register-username").value;
-    const enteredPassword = document.getElementById("register-password").value;
+    .button-container {
+      margin-top: 10px;
+    }
 
-    fetch(`${SERVER_URL}/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: enteredUsername,
-        password: enteredPassword
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          registrationSection.style.display = "none";
-          loginSection.style.display = "block";
-        } else {
-          registrationErrorMessage.textContent = data.message;
-        }
-      });
-  });
+    button {
+      margin-right: 10px;
+    }
 
-  // Add an event listener for the "Graph" tab
-  graphTab.addEventListener("click", function () {
-    // Hide the "Journal" tab content
-    journalContent.style.display = "none";
-    journalTab.classList.remove("active-tab");
+    .entry-text ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
 
-    // Show the "Graph" tab content
-    graphContent.style.display = "block";
-    graphTab.classList.add("active-tab");
+    #login-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
-    // Load and display the graph (you need to implement this part)
-    loadGraph();
-  });
+    #login-section input {
+      margin: 10px 0;
+    }
 
-  function loadGraph() {
-    // Fetch data from the server and create/update the graph here
-    // You should use the Chart.js library to create the graph
-    // Example:
-    fetch(`${SERVER_URL}/graphData`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Create/update the graph using data
-          createGraph(data.graphData);
-        } else {
-          // Handle error
-          console.error("Error loading graph data.");
-        }
-      });
-  }
+    /* Styles for tabs */
+    .tabs {
+      display: flex;
+      cursor: pointer;
+      justify-content: space-between;
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 20px;
+    }
 
-  function createGraph(graphData) {
-    // Use Chart.js to create/update the graph based on graphData
-    // Example:
-    const ctx = document.getElementById('entryGraph').getContext('2d');
-    const myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: graphData.labels,
-        datasets: [{
-          label: 'Entry Count',
-          data: graphData.entryCount,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          // Add more chart customization options here
-        }]
-      },
-      // Add chart configuration options here
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  }
-});
+    .tab {
+      padding: 10px 20px;
+      flex: 1;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .tab:hover {
+      background-color: #e0e0d0;
+    }
+
+    .active-tab {
+      background-color: #d0d0d0;
+      border-bottom: 3px solid #007BFF;
+      margin-bottom: -3px;
+    }
+
+    #graph-content {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Login Section -->
+  <div id="login-section">
+    <h2>Login</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username">
+    <label for="password">Password:</label>
+    <input type="password" id="password">
+    <div style="text-align: center; margin-top: 10px;">
+      <button id="login-btn">Login</button>
+      <div style="margin-top: 15px;">
+        <button id="register-btn">Create Account</button>
+      </div>
+    </div>
+    <p id="login-error-message" style="color:red;"></p>
+  </div>
+
+  <!-- Registration Section -->
+  <div id="registration-section" style="display:none;">
+    <h2>Register</h2>
+    <label for="register-username">Username:</label>
+    <input type="text" id="register-username">
+    <label for="register-password">Password:</label>
+    <input type="password" id="register-password">
+    <button id="submit-registration">Submit</button>
+    <button id="cancel-registration">Cancel</button>
+    <p id="registration-error-message" style="color:red;"></p>
+  </div>
+
+  <div class="container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div id="journal-tab" class="tab active-tab">Journal</div>
+      <div id="graph-tab" class="tab">Graph</div>
+    </div>
+
+    <!-- Journal Tab Content -->
+    <div class="tab-content active-content" id="journal-content">
+      <h1>My Text-based Journal</h1>
+      <div class="entry">
+        <div class="number-selection">
+          <p>Select a number from 1 to 10:</p>
+          <div class="bubble-selection">
+            <label for="number-1">1</label>
+            <input type="radio" name="number" id="number-1" value="1">
+            <label for="number-2">2</label>
+            <input type="radio" name="number" id="number-2" value="2">
+            <label for="number-3">3</label>
+            <input type="radio" name="number" id="number-3" value="3">
+            <label for="number-4">4</label>
+            <input type="radio" name="number" id="number-4" value="4">
+            <label for="number-5">5</label>
+            <input type="radio" name="number" id="number-5" value="5">
+            <label for="number-6">6</label>
+            <input type="radio" name="number" id="number-6" value="6">
+            <label for="number-7">7</label>
+            <input type="radio" name="number" id="number-7" value="7">
+            <label for="number-8">8</label>
+            <input type="radio" name="number" id="number-8" value="8">
+            <label for="number-9">9</label>
+            <input type="radio" name="number" id="number-9" value="9">
+            <label for="number-10">10</label>
+            <input type="radio" name="number" id="number-10" value="10">
+          </div>
+        </div>
+        <textarea id="journal-entry" placeholder="Write your entry here"></textarea>
+        <div class="button-container">
+          <button id="post-entry">Post</button>
+          <button id="delete-entry">Delete Draft</button>
+        </div>
+        <div class="entry-text">
+          <p>Previous day's entries:</p>
+          <ul id="entry-list">
+            <!-- Display previous day's entries here as list items -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph Tab Content -->
+    <div class="tab-content" id="graph-content">
+      <canvas id="entryGraph"></canvas>
+    </div>
+  </div>
+
+  <!-- JavaScript imports -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="client.js"></script>
+</body>
+
