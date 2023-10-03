@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Add this line to bypass SSL validation
   const SERVER_URL = 'https://73.66.168.215:27770';
 
   const loginSection = document.getElementById("login-section");
