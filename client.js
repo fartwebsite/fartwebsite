@@ -205,32 +205,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function createGraph(graphData) {
+      function createGraph(graphData) {
         // Use Chart.js to create/update the graph based on graphData
         // Example:
         const ctx = document.getElementById('entryGraph').getContext('2d');
         const myChart = new Chart(ctx, {
-            type: 'line', // Change this to 'line' for a line graph
-            data: {
-                labels: graphData.labels,
-                datasets: [{
-                    label: 'Entry Count',
-                    data: graphData.entryCount,
-                    borderColor: 'rgba(75, 192, 192, 1)', // Change the color if needed
-                    borderWidth: 2,
-                    fill: false, // Set to true for a filled line graph
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+          type: 'line', // Change this to 'line' for a line graph
+          data: {
+            labels: graphData.labels,
+            datasets: [{
+              label: 'Entry Count',
+              data: graphData.entryCount,
+              borderColor: 'rgba(75, 192, 192, 1)', // Change the color if needed
+              borderWidth: 2,
+              fill: false, // Set to true for a filled line graph
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
             }
+          }
         });
-    }
-
+      }
     function deleteEntry(date) {
         // Send a request to the server to delete the entry
         fetch(`${SERVER_URL}/deleteEntry`, {
