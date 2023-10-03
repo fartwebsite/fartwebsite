@@ -10,15 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const postButton = document.getElementById("post-entry");
   const journalTab = document.getElementById("journal-tab");
   const journalContent = document.getElementById("journal-content");
+  const graphTab = document.getElementById("graph-tab");
+  const graphContent = document.getElementById("graph-content");
 
   const registrationSection = document.getElementById("registration-section");
   const registerBtn = document.getElementById("register-btn");
   const submitRegistrationBtn = document.getElementById("submit-registration");
   const cancelRegistrationBtn = document.getElementById("cancel-registration");
   const registrationErrorMessage = document.getElementById("registration-error-message");
-
-  const graphTab = document.getElementById("graph-tab");
-  const graphContent = document.getElementById("graph-content");
 
   let currentUser = null;
 
@@ -168,6 +167,17 @@ document.addEventListener("DOMContentLoaded", function () {
     loadGraph();
   });
 
+  // Add an event listener for the "Journal" tab
+  journalTab.addEventListener("click", function () {
+    // Hide the "Graph" tab content
+    graphContent.style.display = "none";
+    graphTab.classList.remove("active-tab");
+
+    // Show the "Journal" tab content
+    journalContent.style.display = "block";
+    journalTab.classList.add("active-tab");
+  });
+
   function loadGraph() {
     // Fetch data from the server and create/update the graph here
     // You should use the Chart.js library to create the graph
@@ -186,24 +196,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createGraph(graphData) {
-    // Check if there's an existing chart, and destroy it if it exists
-    if (window.myLineChart) {
-      window.myLineChart.destroy();
-    }
-
-    // Use Chart.js to create/update the line chart based on graphData
+    // Use Chart.js to create/update the graph based on graphData
     // Example:
     const ctx = document.getElementById('entryGraph').getContext('2d');
-    window.myLineChart = new Chart(ctx, {
-      type: 'line',
+    const myChart = new Chart(ctx, {
+      type: 'line', // Change this to 'line' for a line graph
       data: {
         labels: graphData.labels,
         datasets: [{
           label: 'Entry Count',
           data: graphData.entryCount,
-          borderColor: 'rgba(75, 192, 192, 1)',
+          borderColor: 'rgba(75, 192, 192, 1)', // Change the color if needed
           borderWidth: 2,
-          fill: false,
+          fill: false, // Set to true for a filled line graph
         }]
       },
       options: {
