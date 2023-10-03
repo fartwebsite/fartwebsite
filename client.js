@@ -161,4 +161,53 @@ document.addEventListener("DOMContentLoaded", function () {
     journalTab.classList.remove("active-tab");
 
     // Show the "Graph" tab content
-    graphContent.style.display
+    graphContent.style.display = "block";
+    graphTab.classList.add("active-tab");
+
+    // Load and display the graph (you need to implement this part)
+    loadGraph();
+  });
+
+  function loadGraph() {
+    // Fetch data from the server and create/update the graph here
+    // You should use the Chart.js library to create the graph
+    // Example:
+    fetch(`${SERVER_URL}/graphData`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Create/update the graph using data
+          createGraph(data.graphData);
+        } else {
+          // Handle error
+          console.error("Error loading graph data.");
+        }
+      });
+  }
+
+  function createGraph(graphData) {
+    // Use Chart.js to create/update the graph based on graphData
+    // Example:
+    const ctx = document.getElementById('entryGraph').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: graphData.labels,
+        datasets: [{
+          label: 'Entry Count',
+          data: graphData.entryCount,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+});
