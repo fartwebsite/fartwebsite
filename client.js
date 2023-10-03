@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const cancelRegistrationBtn = document.getElementById("cancel-registration");
   const registrationErrorMessage = document.getElementById("registration-error-message");
 
+  const graphTab = document.getElementById("graph-tab"); // Add this line
+
   let currentUser = null;
 
   // Hide main content by default
@@ -148,4 +150,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
   });
+
+  // Add a click event listener for the Graph tab
+  graphTab.addEventListener("click", function() {
+    // You can add code here to handle the Graph tab click event
+    console.log("Graph tab clicked");
+  });
+
+  // Rest of your code...
 });
