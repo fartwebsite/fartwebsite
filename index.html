@@ -97,28 +97,6 @@
     #journal-content {
       display: block;
     }
-
-    /* New styles for the entry list and delete buttons */
-    .entry-list {
-      padding: 0;
-    }
-
-    .entry-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
-
-    .delete-button {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -162,15 +140,42 @@
     <div class="tab-content" id="journal-content">
       <h1>My Text-based Journal</h1>
       <div class="entry">
-        <!-- Number selection and entry text -->
-      </div>
-
-      <!-- Entry List -->
-      <div class="entry-text">
-        <p>Previous day's entries:</p>
-        <ul class="entry-list">
-          <!-- Display previous day's entries here as list items -->
-        </ul>
+        <div class="number-selection">
+          <p>Select a number from 1 to 10:</p>
+          <div class="bubble-selection">
+            <label for="number-1">1</label>
+            <input type="radio" name="number" id="number-1" value="1">
+            <label for="number-2">2</label>
+            <input type="radio" name="number" id="number-2" value="2">
+            <label for="number-3">3</label>
+            <input type="radio" name="number" id="number-3" value="3">
+            <label for="number-4">4</label>
+            <input type="radio" name="number" id="number-4" value="4">
+            <label for="number-5">5</label>
+            <input type="radio" name="number" id="number-5" value="5">
+            <label for="number-6">6</label>
+            <input type="radio" name="number" id="number-6" value="6">
+            <label for="number-7">7</label>
+            <input type="radio" name="number" id="number-7" value="7">
+            <label for="number-8">8</label>
+            <input type="radio" name="number" id="number-8" value="8">
+            <label for="number-9">9</label>
+            <input type="radio" name="number" id="number-9" value="9">
+            <label for="number-10">10</label>
+            <input type="radio" name="number" id="number-10" value="10">
+          </div>
+        </div>
+        <textarea id="journal-entry" placeholder="Write your entry here"></textarea>
+        <div class="button-container">
+          <button id="post-entry">Post</button>
+          <button id="delete-entry">Delete Draft</button>
+        </div>
+        <div class="entry-text">
+          <p>Previous day's entries:</p>
+          <ul id="entry-list">
+            <!-- Display previous day's entries here as list items -->
+          </ul>
+        </div>
       </div>
     </div>
 
