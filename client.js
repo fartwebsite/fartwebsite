@@ -196,10 +196,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createGraph(graphData) {
-    // Use Chart.js to create/update the graph based on graphData
-    // Example:
     const ctx = document.getElementById('entryGraph').getContext('2d');
-    const myChart = new Chart(ctx, {
+    if (window.myChart) {
+      // Destroy the existing chart if it exists
+      window.myChart.destroy();
+    }
+    
+    window.myChart = new Chart(ctx, {
       type: 'line', // Change this to 'line' for a line graph
       data: {
         labels: graphData.labels,
