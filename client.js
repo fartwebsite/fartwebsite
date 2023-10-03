@@ -205,31 +205,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-      function createGraph(graphData) {
-        // Use Chart.js to create/update the graph based on graphData
-        // Example:
+    function createGraph(graphData) {
         const ctx = document.getElementById('entryGraph').getContext('2d');
+        
+        // Check if a chart already exists on this canvas
+        const existingChart = Chart.getChart(ctx);
+        
+        // If there's an existing chart, destroy it
+        if (existingChart) {
+            existingChart.destroy();
+        }
+    
+        // Create the new chart
         const myChart = new Chart(ctx, {
-          type: 'line', // Change this to 'line' for a line graph
-          data: {
-            labels: graphData.labels,
-            datasets: [{
-              label: 'Entry Count',
-              data: graphData.entryCount,
-              borderColor: 'rgba(75, 192, 192, 1)', // Change the color if needed
-              borderWidth: 2,
-              fill: false, // Set to true for a filled line graph
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
+            type: 'line',
+            data: {
+                labels: graphData.labels,
+                datasets: [{
+                    label: 'Entry Count',
+                    data: graphData.entryCount,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-          }
         });
-      }
+}
+
     function deleteEntry(date) {
         // Send a request to the server to delete the entry
         fetch(`${SERVER_URL}/deleteEntry`, {
