@@ -180,4 +180,32 @@ document.addEventListener("DOMContentLoaded", function () {
           createGraph(data.graphData);
         } else {
           // Handle error
-          console.error("Error
+          console.error("Error loading graph data.");
+        }
+      });
+  }
+
+  function createGraph(graphData) {
+    // Use Chart.js to create/update the graph based on graphData
+    // Example:
+    const ctx = document.getElementById('entryGraph').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: graphData.labels,
+        datasets: [{
+          label: 'Entry Count',
+          data: graphData.entryCount,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+});
