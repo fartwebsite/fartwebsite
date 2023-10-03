@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const SERVER_URL = 'https://73.66.168.215:27770';
+document.addEventListener("DOMContentLoaded", function () {
+  const SERVER_URL = 'https://www.fartjournal.net:27770'; // Update with your server URL
 
   const loginSection = document.getElementById("login-section");
   const container = document.querySelector(".container");
@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const entryList = document.getElementById("entry-list");
   const journalEntry = document.getElementById("journal-entry");
   const postButton = document.getElementById("post-entry");
+  const journalTab = document.getElementById("journal-tab");
+  const journalContent = document.getElementById("journal-content");
 
   const registrationSection = document.getElementById("registration-section");
   const registerBtn = document.getElementById("register-btn");
@@ -15,14 +17,15 @@ document.addEventListener("DOMContentLoaded", function() {
   const cancelRegistrationBtn = document.getElementById("cancel-registration");
   const registrationErrorMessage = document.getElementById("registration-error-message");
 
-  const graphTab = document.getElementById("graph-tab"); // Add this line
+  const graphTab = document.getElementById("graph-tab");
+  const graphContent = document.getElementById("graph-content");
 
   let currentUser = null;
 
   // Hide main content by default
   container.style.display = "none";
 
-  loginBtn.addEventListener("click", function() {
+  loginBtn.addEventListener("click", function () {
     const enteredUsername = document.getElementById("username").value;
     const enteredPassword = document.getElementById("password").value;
 
@@ -77,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  postButton.addEventListener("click", function() {
+  postButton.addEventListener("click", function () {
     const selectedNumber = document.querySelector('input[name="number"]:checked');
     const entryText = journalEntry.value.trim();
 
@@ -116,17 +119,17 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
 
-  registerBtn.addEventListener("click", function() {
+  registerBtn.addEventListener("click", function () {
     loginSection.style.display = "none";
     registrationSection.style.display = "block";
   });
 
-  cancelRegistrationBtn.addEventListener("click", function() {
+  cancelRegistrationBtn.addEventListener("click", function () {
     registrationSection.style.display = "none";
     loginSection.style.display = "block";
   });
 
-  submitRegistrationBtn.addEventListener("click", function() {
+  submitRegistrationBtn.addEventListener("click", function () {
     const enteredUsername = document.getElementById("register-username").value;
     const enteredPassword = document.getElementById("register-password").value;
 
@@ -151,11 +154,11 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
 
-  // Add a click event listener for the Graph tab
-  graphTab.addEventListener("click", function() {
-    // You can add code here to handle the Graph tab click event
-    console.log("Graph tab clicked");
-  });
+  // Add an event listener for the "Graph" tab
+  graphTab.addEventListener("click", function () {
+    // Hide the "Journal" tab content
+    journalContent.style.display = "none";
+    journalTab.classList.remove("active-tab");
 
-  // Rest of your code...
-});
+    // Show the "Graph" tab content
+    graphContent.style.display
